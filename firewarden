@@ -77,10 +77,10 @@ process_opts() {
 
 app_opts() {
     # If the application is Chromium or Google Chrome, prevent the first run
-    # greeting and disable the default browser check.
+    # greeting, disable the default browser check, and prevent WebRTC IP leak.
     case $app in
        "chromium"|"google-chrome")
-            appopt="--no-first-run --no-default-browser-check"
+            appopt="--no-first-run --no-default-browser-check --enforce-webrtc-ip-permission-check"
             ;;
     esac
 }

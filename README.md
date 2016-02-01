@@ -15,7 +15,8 @@ prepend your normal command with `firewarden`:
     $ firewarden chromium http://www.forbes.com
 
 When using Firewarden to run `chromium` or `google-chrome`, the script will
-prevent the first run greeting and disable the default browser check.
+prevent the first run greeting, disable the default browser check, and prevent
+the [WebRTC IP leak][3].
 
 ## Local Files
 
@@ -65,7 +66,7 @@ The user may explicitly enable or disable network access, overriding the default
     $ firewarden -N ...
 
 Optionally, the sandbox may be launched with an isolated network namespace and
-a restrictive netfilter. Unless otherwise specified, [NetworkManager][3] will
+a restrictive netfilter. Unless otherwise specified, [NetworkManager][4] will
 be used to determine the first connected network interface. This interface will
 be used to create the new network namespace.
 
@@ -114,4 +115,5 @@ webcams. It is enabled by default when viewing local files.
 
 [1]: https://github.com/netblue30/firejail
 [2]: http://www.engadget.com/2016/01/08/you-say-advertising-i-say-block-that-malware/
-[3]: https://wiki.gnome.org/Projects/NetworkManager
+[3]: https://www.privacytools.io/webrtc.html
+[4]: https://wiki.gnome.org/Projects/NetworkManager
