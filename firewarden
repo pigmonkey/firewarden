@@ -1,0 +1,185 @@
+#!/bin/bash
+#
+# Open a program within a private Firejail sandbox.
+#
+# If the final argument is a local file, the file will be copied into a
+# temporary directory. This directory will be used by Firejail as the user
+# home. After the program has closed, the temporary directory and all of its
+# contents are deleted. By default, networking is disabled and a private /dev
+# is created when viewing a local file.
+#
+###############################################################################
+
+usage() {
+    echo "Usage: firewarden [OPTION...] [PROGRAM] [PROGRAM ARGS...]
+Open a program within a private Firejail sandbox.
+
+If the final argument is a local file, networking is disabled and a private
+/dev is created by default.
+
+For improved isolation when networking is enabled, the sandbox may be launched
+with a new network namespace and a restrictive netfilter. Unless otherwise
+specified, the first connected interface (as reported by NetworkManager) will
+be used.
+
+Options:
+    -n      deny network access (implied when viewing local files)
+    -N      allow network access (implied when viewing URLs)
+    -i      isolate network with new namespace and restrictive filter
+            using first connected interface (implies -N)
+    -I      isolate network with new namespace and restrictive filter
+            using specified interface (implies -N)
+    -d      create a new /dev directory (implied when viewing local files)
+    -D      do not create a new /dev directory (implied when viewing URLs)"
+}
+
+netisolate() {
+    # If requested, isolate the network.
+    if [[ -n "$isolate_network" ]]; then
+        # If an interface wasn't specified, get the first connected device.
+        if [[ -z "$interface" ]]; then
+            interface=`nmcli d | grep -m 1 connected | cut -d ' ' -f 1`
+        fi
+        netopt="--net=$interface --netfilter"
+    fi
+}
+
+process_opts() {
+    # When viewing a local file, disable network access and create private /dev
+    # unless otherwise specified.
+    if [ -n "$file_name" ]; then
+        netopt="--net=none"
+        devopt="--private-dev"
+        if [[ -n "$enable_network" ]]; then
+            netopt=""
+            netisolate
+        fi
+        if [ "$private_dev" = false ]; then
+            devopt=""
+        fi
+    # Otherwise, enable network access and do not create a private /dev unless
+    # otherwise specified.
+    else
+        if [[ -n "$disable_network" ]]; then
+            netopt="--net=none"
+        else
+            netisolate
+        fi
+        if [ "$private_dev" = true ]; then
+            devopt="--private-dev"
+        fi
+    fi
+    # If requested, create a new /dev directory.
+    if [ "$dev" = true  ]; then
+        devopt="--private-dev"
+    fi
+}
+
+app_opts() {
+    # If the application is Chromium or Google Chrome, prevent the first run
+    # greeting and disable the default browser check.
+    case $app in
+       "chromium"|"google-chrome")
+            appopt="--no-first-run --no-default-browser-check"
+            ;;
+    esac
+}
+
+build_dir() {
+    # If the jail is being used for a local file, build a temporary directory
+    # to function as the jail's home and copy the requested file into it.
+    now=`date --iso-8601=s`
+    dir=/tmp/$USER/firewarden/$now
+    mkdir -p $dir
+    cp "$file_path" $dir
+}
+
+file_check() {
+    # If the last remaining argument is a local file, get it's full path, file
+    # name, and build a temporary directory for it.
+    file_path=$(readlink -e "$last")
+    if [ $? -eq 0 ]; then
+        file_name=$(basename "$file_path")
+        build_dir
+        homeopt="--private=$dir"
+    else
+        homeopt="--private"
+    fi
+}
+
+execute() {
+    eval /usr/bin/firejail $homeopt $netopt $devopt $app $appopt $finalargs
+}
+
+cleanup() {
+    # Recursevily remove the temporary directory and all of its contents.
+    if [ -n "$dir" ]; then
+        rm -r $dir
+    fi
+}
+
+while getopts "I:idDnNh" opt; do
+    case $opt in
+        n)
+            disable_network=true
+            ;;
+        N)
+            enable_network=true
+            ;;
+        i)
+            enable_network=true
+            isolate_network=true
+            ;;
+        I)
+            enable_network=true
+            isolate_network=true
+            interface=$OPTARG
+            ;;
+        d)
+            private_dev=true
+            ;;
+        D)
+            private_dev=false
+            ;;
+        h)
+            usage
+            exit
+            ;;
+        :)
+            echo "Option -$OPTARG requires an argument.
+            "
+            usage
+            exit
+            ;;
+    esac
+done
+
+# Check if the last argument is a local file.
+last="${@: -1}"
+file_check
+
+# Process the given options.
+process_opts
+
+# Remove the processed options from the arguments.
+shift "$((OPTIND - 1))"
+
+# The application is now the first argument.
+app=$1
+
+# Pop the app out of the remaining arguments.
+shift
+
+# Add the appropriate options for the application.
+app_opts
+
+# If the last argument was a local file, rebuild final args.
+finalargs="$@"
+if [ -n "$file_name" ]; then
+    arg_length=$(($#-1))
+    args=${@:1:$arg_length}
+    finalargs="$args \"$file_name\""
+fi
+
+execute
+cleanup
