@@ -62,7 +62,7 @@ The user may explicitly enable or disable network access, overriding the default
     # deny network access, regardless of the defaults.
     $ firewarden -n ...
     # enable network access, regardless of the defaults.
-    $ firewarden -N ... # enable network access
+    $ firewarden -N ...
 
 Optionally, the sandbox may be launched with an isolated network namespace and
 a restrictive netfilter. Unless otherwise specified, [NetworkManager][3] will
