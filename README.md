@@ -32,6 +32,18 @@ This is particularly useful for mitigating harm caused by opening potentially
 malicious files, such as PDF and JPGs. Add it to your mailcap to protect your
 system against shady email attachments.
 
+For example, you may want to view the file `~/notatrap.pdf` with the PDF reader `zathura`.
+
+    $ firewarden zathura ~/notatrap.pdf
+
+This is the equivalent of doing:
+
+    $ export now=`date --iso-8601=s`
+    $ mkdir -p /tmp/$USER/firewarden/$now
+    $ cp ~/notatrap.pdf /tmp/$USER/firewarden/$now/
+    $ firejail --net=none --private-dev --private=/tmp/$USER/firewarden/$now zathura notatrap.pdf
+    $ rm -r /tmp/$USER/firewarden/$now
+
 ## Options
 
 ### Network
