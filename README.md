@@ -32,25 +32,6 @@ This is particularly useful for mitigating harm caused by opening potentially
 malicious files, such as PDF and JPGs. Add it to your mailcap to protect your
 system against shady email attachments.
 
-### Private Home
-
-Firewarden's behaviour when dealing with local files is similar to using
-Firejail's `--private-home=` option, but with a shorter syntax and the added
-benefit of working on files outside of the user's home directory.
-
-The following commands are equivalent:
-
-    $ firejail --net=none --private-dev --private-home=~/notatrap.pdf zathura notatrap.pdf
-    $ firewarden zathura ~/notatrap.pdf
-
-However, the following will fail due to the location of the file:
-
-    $ firejail --net=none --private-dev --private-home=/media/sdc1/notatrap.pdf zathura notatrap.pdf
-
-Instead, use Firewarden:
-
-    $ firewarden zathura /media/sdc1/notatrap.pdf
-
 ## Options
 
 ### Network
