@@ -78,11 +78,19 @@ used in the new network namespace.
 :OUTPUT ACCEPT [0:0]
 -A INPUT -i lo -j ACCEPT
 -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+# allow ping
 -A INPUT -p icmp --icmp-type destination-unreachable -j ACCEPT
 -A INPUT -p icmp --icmp-type time-exceeded -j ACCEPT
 -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
+# drop STUN (WebRTC) requests
+-A OUTPUT -p udp --dport 3478 -j DROP
+-A OUTPUT -p udp --dport 3479 -j DROP
+-A OUTPUT -p tcp --dport 3478 -j DROP
+-A OUTPUT -p tcp --dport 3479 -j DROP
 COMMIT
+
 ```
+
 
 ### /dev
 
