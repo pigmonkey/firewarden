@@ -114,7 +114,7 @@ execute() {
 cleanup() {
     # Recursevily remove the temporary directory and all of its contents.
     if [ -n "$dir" ]; then
-        rm -r $dir
+        rm -fr $dir
     fi
 }
 
