@@ -108,7 +108,7 @@ file_check() {
 }
 
 execute() {
-    $(/usr/bin/firejail $homeopt $netopt $devopt $app $appopt $finalargs)
+    $(/usr/bin/firejail $homeopt $netopt $devopt $app $appopt "$finalargs")
 }
 
 cleanup() {
