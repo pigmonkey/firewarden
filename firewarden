@@ -178,7 +178,11 @@ finalargs="$@"
 if [ -n "$file_name" ]; then
     arg_length=$(($#-1))
     args=${@:1:$arg_length}
-    finalargs="$args \"$file_name\""
+    if [ -n "$args" ]; then
+        finalargs="$args $file_name"
+    else
+        finalargs="$file_name"
+    fi
 fi
 
 execute
