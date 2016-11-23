@@ -88,7 +88,6 @@ app_opts() {
 build_dir() {
     # If the jail is being used for a local file, build a temporary directory
     # to function as the jail's home and copy the requested file into it.
-    now=`date --iso-8601=s`
     dir=/tmp/$USER/firewarden/$now
     mkdir -p $dir
     cp "$file_path" $dir
@@ -108,7 +107,7 @@ file_check() {
 }
 
 execute() {
-    $(/usr/bin/firejail $homeopt $netopt $devopt $app $appopt "$finalargs")
+    $(/usr/bin/firejail --whitelist=/opt/firewarden/$now $homeopt $netopt $devopt $app $appopt "$finalargs")
 }
 
 cleanup() {
@@ -153,6 +152,9 @@ while getopts "I:idDnNh" opt; do
             ;;
     esac
 done
+
+# Get the current timestamp.
+now=`date --iso-8601=s`
 
 # Check if the last argument is a local file.
 last="${@: -1}"
