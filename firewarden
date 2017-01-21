@@ -75,8 +75,8 @@ app_opts() {
     # If the application is Chromium or Google Chrome, prevent the first run
     # greeting, disable the default browser check, and prevent WebRTC IP leak.
     case $app in
-       "chromium"|"google-chrome")
-            appopt="--no-first-run --no-default-browser-check --enforce-webrtc-ip-permission-check"
+        "chromium"|"google-chrome")
+            appopt=("--no-first-run" "--no-default-browser-check" "--enforce-webrtc-ip-permission-check")
             ;;
     esac
 }
@@ -103,7 +103,7 @@ file_check() {
 }
 
 execute() {
-    $(/usr/bin/firejail --whitelist=/opt/firewarden/$now $homeopt $netopt $devopt $app $appopt "$finalargs")
+    /usr/bin/firejail --whitelist=/opt/firewarden/"$now" $homeopt $netopt $devopt "$app" "${appopt[@]}" "${finalargs[@]}"
 }
 
 cleanup() {
@@ -153,7 +153,7 @@ done
 now=$(date --iso-8601=s)
 
 # Check if the last argument is a local file.
-last="${@: -1}"
+last=${*: -1}
 file_check
 
 # Process the given options.
@@ -172,14 +172,14 @@ shift
 app_opts
 
 # If the last argument was a local file, rebuild final args.
-finalargs="$@"
+finalargs=( "$@" )
 if [ -n "$file_name" ]; then
     arg_length=$(($#-1))
-    args=${@:1:$arg_length}
-    if [ -n "$args" ]; then
-        finalargs="$args $file_name"
+    args=( ${@:1:$arg_length} )
+    if [ ${#args[@]} -eq 0 ]; then
+        finalargs=( "$file_name" )
     else
-        finalargs="$file_name"
+        finalargs=( "${args[@]}" "$file_name" )
     fi
 fi
 
