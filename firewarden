@@ -69,10 +69,6 @@ process_opts() {
             devopt="--private-dev"
         fi
     fi
-    # If requested, create a new /dev directory.
-    if [ "$dev" = true  ]; then
-        devopt="--private-dev"
-    fi
 }
 
 app_opts() {
