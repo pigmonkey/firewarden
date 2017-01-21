@@ -150,7 +150,7 @@ while getopts "I:idDnNh" opt; do
 done
 
 # Get the current timestamp.
-now=`date --iso-8601=s`
+now=$(date --iso-8601=s)
 
 # Check if the last argument is a local file.
 last="${@: -1}"
