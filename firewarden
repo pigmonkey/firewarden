@@ -85,8 +85,8 @@ build_dir() {
     # If the jail is being used for a local file, build a temporary directory
     # to function as the jail's home and copy the requested file into it.
     dir=/tmp/$USER/firewarden/$now
-    mkdir -p $dir
-    cp "$file_path" $dir
+    mkdir -p "$dir"
+    cp "$file_path" "$dir"
 }
 
 file_check() {
@@ -109,7 +109,7 @@ execute() {
 cleanup() {
     # Recursevily remove the temporary directory and all of its contents.
     if [ -n "$dir" ]; then
-        rm -fr $dir
+        rm -fr "$dir"
     fi
 }
 
