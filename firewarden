@@ -38,7 +38,7 @@ netisolate() {
     if [[ -n "$isolate_network" ]]; then
         # If an interface wasn't specified, get the first connected device.
         if [[ -z "$interface" ]]; then
-            interface=`nmcli d | grep -m 1 connected | cut -d ' ' -f 1`
+            interface=$(nmcli d | grep -m 1 connected | cut -d ' ' -f 1)
         fi
         netopt="--net=$interface --netfilter"
     fi
