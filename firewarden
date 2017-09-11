@@ -84,7 +84,11 @@ app_opts() {
 build_dir() {
     # If the jail is being used for a local file, build a temporary directory
     # to function as the jail's home and copy the requested file into it.
-    dir=/tmp/$USER/firewarden/$now
+    if [ -n "$XDG_RUNTIME_DIR" ]; then
+        dir=$XDG_RUNTIME_DIR/firewarden/$now
+    else
+        dir=/tmp/$USER/firewarden/$now
+    fi
     mkdir -p "$dir"
     cp "$file_path" "$dir"
 }
