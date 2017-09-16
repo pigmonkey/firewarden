@@ -39,10 +39,10 @@ For example, you may want to view the file `~/notatrap.pdf` with the PDF reader 
 This is the equivalent of doing:
 
     $ export now=`date --iso-8601=s`
-    $ mkdir -p /tmp/$USER/firewarden/$now
-    $ cp ~/notatrap.pdf /tmp/$USER/firewarden/$now/
-    $ firejail --net=none --private-dev --private=/tmp/$USER/firewarden/$now zathura notatrap.pdf
-    $ rm -r /tmp/$USER/firewarden/$now
+    $ mkdir -p $XDG_RUNTIME_DIR/$USER/firewarden/$now
+    $ cp ~/notatrap.pdf $XDG_RUNTIME_DIR/$USER/firewarden/$now/
+    $ firejail --net=none --private-dev --private=$XDG_RUNTIME_DIR/$USER/firewarden/$now zathura notatrap.pdf
+    $ rm -r $XDG_RUNTIME_DIR/$USER/firewarden/$now
 
 ## Options
 
@@ -110,7 +110,7 @@ webcams. It is enabled by default when viewing local files.
     $ firewarden chromium https://www.youtube.com/watch?v=bDJb8WOJYdA &
     $ firejail --list
     630:pigmonkey:/usr/bin/firejail --private --net=enp0s25 --netfilter --private-dev chromium --no-first-run --no-default-browser-check https://www.nsa.gov/ia/
-    31788:pigmonkey:/usr/bin/firejail --private=/tmp/pigmonkey/firewarden/2016-01-31T16:09:14-0800 --net=none --private-dev zathura nsa-ant.pdf
+    31788:pigmonkey:/usr/bin/firejail --private=/run/user/1000/firewarden/2016-01-31T16:09:14-0800 --net=none --private-dev zathura nsa-ant.pdf
     32255:pigmonkey:/usr/bin/firejail --private chromium --no-first-run --no-default-browser-check https://www.youtube.com/watch?v=bDJb8WOJYdA
 
 
