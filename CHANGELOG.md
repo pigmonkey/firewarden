@@ -1,6 +1,12 @@
 # Change Log
 
 
+## [ 1.0.2 ] - 2018-03-30
+
+### Changed
+- Avoid using directories when building nonexistent files to create private `/opt` and `/srv`
+
+
 ## [ 1.0.1 ] - 2017-09-15
 
 ### Changed
