@@ -91,6 +91,7 @@ build_dir() {
     fi
     mkdir -p "$dir"
     cp "$file_path" "$dir"
+    chmod u+w "$dir"/"$file_name"
 }
 
 file_check() {
