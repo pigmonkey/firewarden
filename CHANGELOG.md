@@ -1,6 +1,13 @@
 # Change Log
 
 
+## [ 1.0.3 ] - 2018-10-06
+
+### Changed
+- Always make files writable by user within the jail.
+- Support private cache directory.
+
+
 ## [ 1.0.2 ] - 2018-08-30
 
 ### Changed
