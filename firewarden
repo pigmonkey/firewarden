@@ -108,7 +108,7 @@ file_check() {
 }
 
 execute() {
-    /usr/bin/firejail --private-srv=firewarden-"$now" --private-opt=firewarden-"$now" $homeopt $netopt $devopt "$app" "${appopt[@]}" "${finalargs[@]}"
+    /usr/bin/firejail --private-cache --private-srv=firewarden-"$now" --private-opt=firewarden-"$now" $homeopt $netopt $devopt "$app" "${appopt[@]}" "${finalargs[@]}"
 }
 
 cleanup() {
