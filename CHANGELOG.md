@@ -1,6 +1,13 @@
 # Change Log
 
 
+## [ Unreleased ]
+
+### Changed
+- Always force unique basedir when executing qutebrowser.
+- Support configuration scripts.
+
+
 ## [ 1.0.3 ] - 2018-10-06
 
 ### Changed

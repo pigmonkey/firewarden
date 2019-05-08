@@ -42,6 +42,41 @@ This is the equivalent of doing:
 
 ## Options
 
+### Configuration Script
+
+When the `-c` option is specified, Firewarden will attempt to locate and
+execute a configuration script named for the application in
+`$XDG_CONFIG_HOME/firewarden/$APP.sh`. For example, executing `firewarden -c
+chromium` will cause Firewarden to check for
+`$XDG_CONFIG_HOME/firewarden/chromium.sh`. If this script exists, it will be
+passed the variables `$FIREWARDEN_HOME` (corresponding to the home directory of
+the sandbox) and `$FIREWARDEN_FILE` (corresponding to the name of the local
+file, if appropriate), and executed.
+
+This may be used as a way to configure applications within the temporary
+filesystem of the sandbox. For example, you may install your normal Chromium
+preferences file:
+
+    #!/bin/sh
+    mkdir -p "$FIREWARDEN_HOME/.config/chromium/Default"
+    cp "$HOME/.config/chromium/Default/Preferences "$FIREWARDEN_HOME/.config/chromium/Default"
+
+Or, rather than installing your complete Zathura config, you may want to just
+configure zoom keys.
+
+    #!/bin/sh
+    mkdir -p "$FIREWARDEN_HOME/.config/zathura"
+    echo "map <C-i> zoom in" >> "$FIREWARDEN_HOME/.config/zathura/zathurarc"
+    echo "map <C-o> zoom out" >> "$FIREWARDEN_HOME/.config/zathura/zathurarc"
+
+Or, you may wish to ensure that, if a local file was provided, you always have
+permission to write to it in the sandbox.
+
+    #!/bin/sh
+    if [ -n "$FIREWARDEN_FILE" ] && [ -r "FIREWARDEN_HOME/$FIREWARDEN_FILE" ]; then
+        chmod u+w "FIREWARDEN_HOME/$FIREWARDEN_FILE"
+    fi
+
 ### Network
 
 Networking is enabled by default, unless viewing local files (which most of the
