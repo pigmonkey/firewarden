@@ -23,6 +23,7 @@ specified, the first connected interface (as reported by NetworkManager) will
 be used.
 
 Options:
+    -c      execute config script
     -n      deny network access (implied when viewing local files)
     -N      allow network access (implied when viewing URLs)
     -i      isolate network with new namespace and restrictive filter
@@ -123,8 +124,11 @@ cleanup() {
     fi
 }
 
-while getopts "I:idDnNh" opt; do
+while getopts "cI:idDnNh" opt; do
     case $opt in
+        c)
+            use_config=true
+            ;;
         n)
             disable_network=true
             ;;
@@ -190,6 +194,15 @@ if [ -n "$file_name" ]; then
         finalargs=( "$file_name" )
     else
         finalargs=( "${args[@]}" "$file_name" )
+    fi
+fi
+
+if [ -n "$use_config" ]; then
+    app_basename=$(basename "$app")
+    if [ -n "$XDG_CONFIG_HOME" ] && [ -r "$XDG_CONFIG_HOME/firewarden/$app_basename.sh" ]; then
+        FIREWARDEN_HOME=$dir FIREWARDEN_FILE=$file_name "$XDG_CONFIG_HOME/firewarden/$app_basename.sh"
+    elif [ -n "$HOME" ] && [ -r "$HOME/.config/firewarden/$app_basename.sh" ]; then
+        FIREWARDEN_HOME=$dir FIREWARDEN_FILE=$file_name "$HOME/.config/firewarden/$app_basename.sh"
     fi
 fi
 
