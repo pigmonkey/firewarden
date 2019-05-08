@@ -14,10 +14,6 @@ prepend your normal command with `firewarden`:
 
     $ firewarden chromium http://www.forbes.com
 
-When using Firewarden to run `chromium` or `google-chrome`, the script will
-prevent the first run greeting, disable the default browser check, and prevent
-the [WebRTC IP leak][3].
-
 ## Local Files
 
 If the final argument appears to be a local file, Firewarden will copy the file
