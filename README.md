@@ -59,7 +59,7 @@ The user may explicitly enable or disable network access, overriding the default
     $ firewarden -N ...
 
 Optionally, the sandbox may be launched with an isolated network namespace and
-a restrictive netfilter. Unless otherwise specified, [NetworkManager][4] will
+a restrictive netfilter. Unless otherwise specified, [NetworkManager][3] will
 be used to determine the first connected network interface. This interface will
 be used to create the new network namespace.
 
@@ -91,7 +91,6 @@ COMMIT
 
 ```
 
-
 ### /dev
 
 Optionally, a new `/dev` can be created to further restrict the sandbox. This
@@ -102,6 +101,26 @@ webcams. It is enabled by default when viewing local files.
     $ firewarden -d ...
     # do not create a private /dev, regardless of the defaults.
     $ firewarden -D ...
+
+## Application Flags
+
+Firewarden will always add certain flags when it executes specific applications.
+
+### Chromium
+
+When executing `chromium` or `google-chrome`, Firewarden will prevent the first run
+greeting, disable the default browser check, and prevent WebRTC IP leak.
+
+* `--no-first-run`
+* `--no-default-browser-check`
+* `--enforce-webrtc-ip-permission-check`
+
+### Qutebrowser
+
+When executing `qutebrowser`, Firewarden will set the basedir to `~/basedir`
+within the sandbox home directory to prevent session-sharing attempts.
+
+* `--basedir`
 
 ## Examples
 
@@ -116,5 +135,4 @@ webcams. It is enabled by default when viewing local files.
 
 [1]: https://github.com/netblue30/firejail
 [2]: http://www.engadget.com/2016/01/08/you-say-advertising-i-say-block-that-malware/
-[3]: https://www.privacytools.io/webrtc.html
-[4]: https://wiki.gnome.org/Projects/NetworkManager
+[3]: https://wiki.gnome.org/Projects/NetworkManager

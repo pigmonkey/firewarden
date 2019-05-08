@@ -72,11 +72,16 @@ process_opts() {
 }
 
 app_opts() {
-    # If the application is Chromium or Google Chrome, prevent the first run
-    # greeting, disable the default browser check, and prevent WebRTC IP leak.
     case $app in
+        # If the application is Chromium or Google Chrome, prevent the first run
+        # greeting, disable the default browser check, and prevent WebRTC IP leak.
         "chromium"|"google-chrome")
             appopt=("--no-first-run" "--no-default-browser-check" "--enforce-webrtc-ip-permission-check")
+            ;;
+        # If the application is Qutebrowser, place the basedir within the
+        # temporary home to prevent session-sharing attempts.
+        "qutebrowser")
+            appopt=("--basedir" "$dir/basedir")
             ;;
     esac
 }
