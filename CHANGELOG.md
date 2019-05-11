@@ -1,7 +1,7 @@
 # Change Log
 
 
-## [ Unreleased ]
+## [ 1.1.0 ] - 2019-05-10
 
 ### Changed
 - Always force unique basedir when executing qutebrowser.
