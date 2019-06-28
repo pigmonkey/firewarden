@@ -114,7 +114,7 @@ file_check() {
 }
 
 execute() {
-    /usr/bin/firejail --private-cache --private-srv=firewarden-"$now" --private-opt=firewarden-"$now" $homeopt $netopt $devopt "$app" "${appopt[@]}" "${finalargs[@]}"
+    /usr/bin/firejail $private_cache --private-srv=firewarden-"$now" --private-opt=firewarden-"$now" $homeopt $netopt $devopt "$app" "${appopt[@]}" "${finalargs[@]}"
 }
 
 cleanup() {
@@ -204,6 +204,11 @@ if [ -n "$use_config" ]; then
     elif [ -n "$HOME" ] && [ -r "$HOME/.config/firewarden/$app_basename.sh" ]; then
         FIREWARDEN_HOME=$dir FIREWARDEN_FILE=$file_name "$HOME/.config/firewarden/$app_basename.sh"
     fi
+fi
+
+private_cache="--private-cache"
+if [ "$(/usr/bin/firejail --private-cache 2>&1)" == "Error: invalid --private-cache command line option" ]; then
+    private_cache=""
 fi
 
 execute
