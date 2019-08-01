@@ -79,7 +79,7 @@ app_opts() {
     case $app in
         # If the application is Chromium or Google Chrome, prevent the first run
         # greeting, disable the default browser check, and prevent WebRTC IP leak.
-        "chromium"|"google-chrome")
+        "chromium"|"google-chrome"|"brave")
             appopt=("--no-first-run" "--no-default-browser-check" "--enforce-webrtc-ip-permission-check")
             ;;
         # If the application is Qutebrowser, place the basedir within the
