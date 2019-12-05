@@ -1,10 +1,13 @@
 # Change Log
 
 
-## Unreleased
+## [ 1.1.1 ] - 2019-12-05
 
 ### Changed
 - Drop `--private-cache`. This is redundant now that `--private` is always used. Dropping it improves support for older versions of Firejail.
+
+### Added
+- New `-q` flag to tell firejail to be quiet.
 
 
 ## [ 1.1.0 ] - 2019-05-10

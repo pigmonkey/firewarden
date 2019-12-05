@@ -31,7 +31,8 @@ Options:
     -I      isolate network with new namespace and restrictive filter
             using specified interface (implies -N)
     -d      create a new /dev directory (implied when viewing local files)
-    -D      do not create a new /dev directory (implied when viewing URLs)"
+    -D      do not create a new /dev directory (implied when viewing URLs)
+    -q      tell firejail to be quiet"
 }
 
 netisolate() {
@@ -114,7 +115,7 @@ file_check() {
 }
 
 execute() {
-    /usr/bin/firejail --private-srv=firewarden-"$now" --private-opt=firewarden-"$now" $homeopt $netopt $devopt "$app" "${appopt[@]}" "${finalargs[@]}"
+    /usr/bin/firejail --private-srv=firewarden-"$now" --private-opt=firewarden-"$now" $quiet $homeopt $netopt $devopt "$app" "${appopt[@]}" "${finalargs[@]}"
 }
 
 cleanup() {
@@ -124,7 +125,7 @@ cleanup() {
     fi
 }
 
-while getopts "cI:idDnNh" opt; do
+while getopts "cI:idDnNqh" opt; do
     case $opt in
         c)
             use_config=true
@@ -149,6 +150,9 @@ while getopts "cI:idDnNh" opt; do
             ;;
         D)
             private_dev=false
+            ;;
+        q)
+            quiet="--quiet"
             ;;
         h)
             usage
