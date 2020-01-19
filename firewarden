@@ -115,7 +115,7 @@ file_check() {
 }
 
 execute() {
-    /usr/bin/firejail --private-srv=firewarden-"$now" --private-opt=firewarden-"$now" $quiet $homeopt $netopt $devopt "$app" "${appopt[@]}" "${finalargs[@]}"
+    /usr/bin/firejail --disable-mnt --private-srv=firewarden-"$now" --private-opt=firewarden-"$now" $quiet $homeopt $netopt $devopt "$app" "${appopt[@]}" "${finalargs[@]}"
 }
 
 cleanup() {
