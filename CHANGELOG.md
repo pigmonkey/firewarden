@@ -1,6 +1,12 @@
 # Change Log
 
 
+## [ 1.1.2 ] - 2020-01-19
+
+### Added
+- Always use `--disable-mnt` to prevent external media access.
+
+
 ## [ 1.1.1 ] - 2019-12-05
 
 ### Changed
