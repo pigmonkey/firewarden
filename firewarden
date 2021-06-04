@@ -191,7 +191,7 @@ app_opts
 
 # If the last argument was a local file, rebuild final args.
 finalargs=( "$@" )
-if [ -n "$file_name" ]; then
+if [ -n "$file_name" ] && [ $# -gt 0 ]; then
     arg_length=$(($#-1))
     args=( ${@:1:$arg_length} )
     if [ ${#args[@]} -eq 0 ]; then
