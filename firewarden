@@ -32,6 +32,7 @@ Options:
             using specified interface (implies -N)
     -d      create a new /dev directory (implied when viewing local files)
     -D      do not create a new /dev directory (implied when viewing URLs)
+    -O      do not create a new /opt directory
     -q      tell firejail to be quiet"
 }
 
@@ -70,6 +71,10 @@ process_opts() {
         if [ "$private_dev" = true ]; then
             devopt="--private-dev"
         fi
+    fi
+    optopt="--private-opt=firewarden-$now"
+    if [ "$private_opt" = false ]; then
+        optopt=""
     fi
     # Always use a private home directory.
     build_dir
@@ -115,7 +120,7 @@ file_check() {
 }
 
 execute() {
-    /usr/bin/firejail --disable-mnt --private-srv=firewarden-"$now" --private-opt=firewarden-"$now" $quiet $homeopt $netopt $devopt "$app" "${appopt[@]}" "${finalargs[@]}"
+    /usr/bin/firejail --disable-mnt --private-srv=firewarden-"$now" $optopt $quiet $homeopt $netopt $devopt "$app" "${appopt[@]}" "${finalargs[@]}"
 }
 
 cleanup() {
@@ -125,7 +130,7 @@ cleanup() {
     fi
 }
 
-while getopts "cI:idDnNqh" opt; do
+while getopts "cI:idDnNOqh" opt; do
     case $opt in
         c)
             use_config=true
@@ -150,6 +155,9 @@ while getopts "cI:idDnNqh" opt; do
             ;;
         D)
             private_dev=false
+            ;;
+        O)
+            private_opt=false
             ;;
         q)
             quiet="--quiet"
