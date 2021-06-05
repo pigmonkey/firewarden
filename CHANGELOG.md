@@ -1,6 +1,15 @@
 # Change Log
 
 
+## [ 1.1.3 ] - 2021-06-04
+
+### Added
+- New `-O` flag disables the default behaviour of passing `--private-opt` to Firejail.
+
+### Fixed
+- Do not check for a local file if the only arg passed is the program to be jailed.
+
+
 ## [ 1.1.2 ] - 2020-01-19
 
 ### Added
