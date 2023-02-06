@@ -1,6 +1,12 @@
 # Change Log
 
 
+## [ 1.1.4 ] - 2022-02-06
+
+### Fixed
+- Fix Qutebrowser basedir path argument for Firejail 0.9.72.
+
+
 ## [ 1.1.3 ] - 2021-06-04
 
 ### Added
