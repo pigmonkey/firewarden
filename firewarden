@@ -91,7 +91,7 @@ app_opts() {
         # If the application is Qutebrowser, place the basedir within the
         # temporary home to prevent session-sharing attempts.
         "qutebrowser")
-            appopt=("--basedir" "$dir/basedir")
+            appopt=("--basedir" "basedir")
             ;;
     esac
 }
