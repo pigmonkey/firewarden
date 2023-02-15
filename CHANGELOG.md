@@ -1,6 +1,12 @@
 # Change Log
 
 
+## [ 1.1.5 ] - 2022-02-14
+
+### Fixed
+- Ignore full path when guessing what app is being run.
+
+
 ## [ 1.1.4 ] - 2022-02-06
 
 ### Fixed
