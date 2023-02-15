@@ -82,7 +82,8 @@ process_opts() {
 }
 
 app_opts() {
-    case $app in
+    appbasename="$(basename "$app")"
+    case $appbasename in
         # If the application is Chromium or Google Chrome, prevent the first run
         # greeting, disable the default browser check, and prevent WebRTC IP leak.
         "chromium"|"google-chrome"|"brave")
